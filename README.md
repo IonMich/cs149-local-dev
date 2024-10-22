@@ -74,3 +74,58 @@ Link to Official Github Repo: [Assignment 2](https://github.com/stanford-cs149/a
 No additional dependencies are required for this assignment (a compatible `g++` is all we need). 
 
 Clone the repository and build the executables for each part of the assignment by running `make` in the respective directories. The included executable `part_a/runtasks_ref_linux` also was tested and it works.
+
+## Assignment 3
+
+Link to Official Github Repo: [Assignment 3](https://github.com/stanford-cs149/asst3)
+
+Clone the repository via git as in the previous assignments. 
+
+> [!NOTE] 
+> This assignment requires a compatible NVIDIA GPU and CUDA.
+
+> [!NOTE]  
+> As mentioned in one of the provided `readme` [here](https://github.com/stanford-cs149/asst3/blob/master/cloud_readme.md#setting-up-the-vm-environment), if you are on an Ubuntu 22.04 machine, you may be able to install everything via the `install.sh` script provided in the assignment repository:
+>   
+>   ```shell
+>   chmod +x ./install.sh
+>   ./install.sh
+>   ```
+> However that this script is intended for the AWS VMs, so use it at your own risk.
+
+With conda, we can install CUDA via NVIDIA's official [conda channel](https://anaconda.org/nvidia/cuda):
+
+```shell
+conda install nvidia::cuda
+```
+
+This will install the latest version of CUDA available in the conda channel. If you need a specific version of CUDA, you can specify a label, as explained in the NVIDIA conda channel.
+
+This installation of CUDA is not automatically compatible with the provided `Makefile`s in the various parts of this assignment. You will need to modify the `Makefile` to point to the correct CUDA installation directory and change the `gcc` invocation.
+
+Specifically, here is the modified portion of the `Makefile` that appears to work for Part 1:
+
+```makefile
+
+OBJDIR=objs
+# CXX=g++ -m64
+# CXXFLAGS=-O3 -Wall
+
+# Building on Linux
+LDFLAGS=-L/home/<user>/anaconda3/envs/cs149/lib/ -lcudart
+NVCC=nvcc
+NVCCFLAGS=-O3 -m64 -arch=sm_86
+
+```
+where `<user>` is your username. Here we use `-arch=sm_86` to specify the compute capability of the RTX 3060Ti. You can find the compute capability of your GPU [here](https://developer.nvidia.com/cuda-gpus).
+
+After modifying the `Makefile`, you should be able to build the executables for part 1 of the assignment by running `make` in the corresponding directory. 
+
+The same changes to the `Makefile` should be made for Part 2.
+
+For the main dish, Part 3 (A Simple Circle Renderer), there is an additional dependency on [freeglut](https://freeglut.sourceforge.net/index.php#download). On Ubuntu, you can install GLUT via `apt`:
+
+```shell
+
+sudo apt-get install freeglut3-dev
+```

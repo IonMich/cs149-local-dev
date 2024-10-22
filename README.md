@@ -64,4 +64,13 @@ conda install conda-forge::ispc
 
 That's it! You should now be able to build the executables for each part of the assignment by running `make` in the respective directories. 
 
-**Note:** In Program 6 (K-Means) you need to uncomment the portion of `main.cpp` that generates the input data. After you have generated the input data, you can comment out that portion of the code and run the program as normal.
+> [!NOTE]
+> In Program 6 (K-Means) you need to uncomment the portion of `main.cpp` that generates the input data. After you have generated the input data, you can comment out that portion of the code and run the program as normal.
+
+## Assignment 2
+
+Link to Official Github Repo: [Assignment 2](https://github.com/stanford-cs149/asst2)
+
+No additional dependencies are required for this assignment (a compatible `g++` is all we need). 
+
+Clone the repository and build the executables for each part of the assignment by running `make` in the respective directories. The included executable `part_a/runtasks_ref_linux` also was tested and it works.

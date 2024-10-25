@@ -20,8 +20,8 @@ Some important notes:
 | ------------ | ------------------ | --------------- | --------------- |
 | Assignment 1 | :white_check_mark: | :grey_question: | :grey_question: |
 | Assignment 2 | :white_check_mark: | :grey_question: | :grey_question: |
-| Assignment 3 | :yellow_circle:    | :grey_question: | :grey_question: |
-| Assignment 4 | :grey_question:    | :grey_question: | :grey_question: |
+| Assignment 3 | :white_check_mark: | :grey_question: | :grey_question: |
+| Assignment 4 | :yellow_circle:    | :grey_question: | :grey_question: |
 | Assignment 5 | :grey_question:    | :grey_question: | :grey_question: |
 
 This repository provides `conda` installation instructions for Stanford's CS149 (Parallel Computing) programming assignments. With `conda` you can isolate the particular Python environment needed for each assignment (or the course as a whole), and avoid conflicts with other projects on your system.
@@ -93,39 +93,29 @@ Clone the repository via git as in the previous assignments.
 >   ```
 > However that this script is intended for the AWS VMs, so use it at your own risk.
 
-With conda, we can install CUDA via NVIDIA's official [conda channel](https://anaconda.org/nvidia/cuda):
+With conda, we can install CUDA via NVIDIA's official [conda channel](https://anaconda.org/nvidia/cuda). However, this installation defines environment variables such as `CXX` and `CXXFLAGS` that are also referenced in the `Makefile` of the assignment. Getting the `Makefile` to work with the conda-installed CUDA and OpenGL+Glut appears to be very tricky.
 
-```shell
-conda install nvidia::cuda
-```
-
-This will install the latest version of CUDA available in the conda channel. If you need a specific version of CUDA, you can specify a label, as explained in the NVIDIA conda channel.
-
-This installation of CUDA is not automatically compatible with the provided `Makefile`s in the various parts of this assignment. You will need to modify the `Makefile` to point to the correct CUDA installation directory and change the `gcc` invocation.
-
-Specifically, here is the modified portion of the `Makefile` that appears to work for Part 1:
-
-```makefile
-
-OBJDIR=objs
-# CXX=g++ -m64
-# CXXFLAGS=-O3 -Wall
-
-# Building on Linux
-LDFLAGS=-L/home/<user>/anaconda3/envs/cs149/lib/ -lcudart
-NVCC=nvcc
-NVCCFLAGS=-O3 -m64 -arch=sm_86
-
-```
-where `<user>` is your username. Here we use `-arch=sm_86` to specify the compute capability of the RTX 3060Ti. You can find the compute capability of your GPU [here](https://developer.nvidia.com/cuda-gpus).
-
-After modifying the `Makefile`, you should be able to build the executables for part 1 of the assignment by running `make` in the corresponding directory. 
-
-The same changes to the `Makefile` should be made for Part 2.
-
-For the main dish, Part 3 (A Simple Circle Renderer), there is an additional dependency on [freeglut](https://freeglut.sourceforge.net/index.php#download). On Ubuntu, you can install GLUT via `apt`:
+A solution is to install cuda system-wide via the [installer](https://developer.nvidia.com/cuda-downloads?target_os=Linux&target_arch=x86_64&Distribution=Ubuntu&target_version=22.04&target_type=deb_network) provided by NVIDIA for CUDA Toolkit. For the rendering part, GLUT can be installed in Ubuntu via `apt`:
 
 ```shell
 
 sudo apt-get install freeglut3-dev
+```
+
+Finally you might need to specify the compute capability of your GPU in the `Makefile` of the assignment. Specifically for GeForce 30 series GPUs, you need to specify `-arch=sm_86` in the `NVCCFLAGS` variable in the `Makefile`:
+
+```makefile
+NVCCFLAGS = -O3 -arch=sm_86
+```
+
+You can find the compute capability of your GPU [here](https://developer.nvidia.com/cuda-gpus).
+
+# Assignment 4
+
+After a bit of trial and error, the following combination of package versions appears to work on Ubuntu 22.04:
+
+```shell
+conda create -n gpt149
+conda activate gpt149
+conda install pytorch==2.1.2 torchvision==0.16.2 torchaudio==2.1.2 pytorch-cuda=11.8 python=3.10 numpy=1.26 ninja tiktoken -c pytorch -c nvidia -c conda-forge
 ```

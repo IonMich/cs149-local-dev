@@ -21,7 +21,7 @@ Some important notes:
 | Assignment 1 | :white_check_mark: | :grey_question: | :grey_question: |
 | Assignment 2 | :white_check_mark: | :grey_question: | :grey_question: |
 | Assignment 3 | :white_check_mark: | :grey_question: | :grey_question: |
-| Assignment 4 | :yellow_circle:    | :grey_question: | :grey_question: |
+| Assignment 4 | :white_check_mark: | :grey_question: | :grey_question: |
 | Assignment 5 | :grey_question:    | :grey_question: | :grey_question: |
 
 This repository provides `conda` installation instructions for Stanford's CS149 (Parallel Computing) programming assignments. With `conda` you can isolate the particular Python environment needed for each assignment (or the course as a whole), and avoid conflicts with other projects on your system.
